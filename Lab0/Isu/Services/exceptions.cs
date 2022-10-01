@@ -1,16 +1,41 @@
 ﻿namespace Isu.Services;
 
-public class IsuException : Exception
+public class GroupIsFullException : Exception
+    {
+        public GroupIsFullException()
+            : base("The group is full.")
+        {
+        }
+    }
+
+public class WrongGroupNameException : Exception
+    {
+        public WrongGroupNameException()
+            : base("Wrong group name.")
+        {
+        }
+    }
+
+public class StudentHasGroupException : Exception
+    {
+        public StudentHasGroupException()
+            : base("Student already has a group.")
+        {
+        }
+    }
+
+public class GroupAlreadyExistsException : Exception
 {
-    public IsuException()
-        : base("Isu is down")
-    { }
+    public GroupAlreadyExistsException()
+        : base("The group is already exists.")
+    {
+    }
+}
 
-    public IsuException(string message)
-        : base(message)
-    { }
-
-    public IsuException(string message, Exception innerException)
-        : base(message, innerException)
-    { }
+public class WrongData : Exception
+{
+    public WrongData()
+        : base("Wrong data were given.")
+    {
+    }
 }

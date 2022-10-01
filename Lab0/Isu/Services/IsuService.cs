@@ -15,33 +15,58 @@ public class IsuService : IIsuService
    public Group AddGroup(string name)
    {
       Group group = new Group(name);
-      Groups.Add(group);
+      if (!Groups.Contains(group))
+      {
+         Groups.Add(group);
+      }
+      else
+      {
+         throw new GroupAlreadyExistsException();
+      }
+
       return group;
    }
 
    public Student AddStudent(Group group, string name)
    {
-      Student student = new Student(name, group);
-      group.AddStudent(student);
+      if (string.IsNullOrEmpty(name) || group == null)
+      {
+         throw new WrongData();
+      }
+
+      Random rnd = new Random();
+      int id = rnd.Next(1000000, 9999999);
+      Student student = new Student(name, group, id);
+      if (!group.Students.Contains(student))
+      {
+         group.AddStudent(student);
+      }
+      else
+      {
+         throw new StudentHasGroupException();
+      }
+
       return student;
    }
 
-   public List<Student>? FindStudents(GroupName groupName)
+   public List<Student> FindStudents(GroupName groupName)
    {
+      List<Student> emptylist = new List<Student>();
       var group = Groups.Where(p => p.Name == groupName).FirstOrDefault();
       if (group != null) return group.Students;
-      return null;
+      return emptylist;
    }
 
-   public List<Student>? FindStudents(CourseNumber courseNumber)
+   public List<Student> FindStudents(CourseNumber courseNumber)
    {
+      List<Student> emptylist = new List<Student>();
       var group = Groups.Where(p => p.Name.CourseNumber == courseNumber);
       foreach (var grup in group)
       {
          return grup.Students;
       }
 
-      return null;
+      return emptylist;
    }
 
    public Group FindGroup(GroupName groupName)
@@ -49,7 +74,7 @@ public class IsuService : IIsuService
       var group = Groups.Where(p => p.Name == groupName).FirstOrDefault();
       if (group == null)
       {
-           throw new IsuException("Wrong name of the group.");
+           throw new WrongGroupNameException();
       }
 
       return group;
@@ -64,8 +89,15 @@ public class IsuService : IIsuService
    public void ChangeStudentGroup(Student student, Group newGroup)
    {
       Group oldgroup = student.Group;
-      oldgroup.Students.Remove(student);
-      newGroup.AddStudent(student);
+      if (newGroup.AvailabilityofGroup())
+      {
+         oldgroup.Students.Remove(student);
+         newGroup.AddStudent(student);
+      }
+      else
+      {
+         throw new GroupIsFullException();
+      }
    }
 
    public Student? FindStudent(int id)

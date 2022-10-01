@@ -4,10 +4,9 @@ namespace Isu.Entities;
 
 public class Student
 {
-    public Student(string name, Group group)
+    public Student(string name, Group group, int id)
     {
-        Random rnd = new Random();
-        Id = rnd.Next(1000000, 9999999);
+        Id = id;
         Name = name;
         Group = group;
     }

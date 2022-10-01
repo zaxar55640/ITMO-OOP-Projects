@@ -12,20 +12,28 @@ public class Group
         Students = new List<Student>();
     }
 
-    public List<Student> Students { get; set; } = new List<Student>();
+    public List<Student> Students { get; }
     public GroupName Name { get; }
 
     public Group AddStudent(Student name)
     {
         if (this.Students.Count <= studentAmount)
             Students.Add(name);
-        else throw new IsuException("The group is full.");
+        else throw new GroupIsFullException();
         return this;
     }
 
     public Student? FindStudent(int id)
     {
-        var person = Students.Where(p => id == p.Id);
-        return person.FirstOrDefault();
+        var person = Students.Where(p => id == p.Id).FirstOrDefault();
+        return person;
+    }
+
+    public bool AvailabilityofGroup()
+    {
+        if (this.Students.Count <= studentAmount)
+            return true;
+        else
+            return false;
     }
 }
