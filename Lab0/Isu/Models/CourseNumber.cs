@@ -1,3 +1,10 @@
-namespace Isu.Models;
-
-public class CourseNumber { }
+namespace Isu.Models
+{
+    public enum CourseNumber
+    {
+        First = 1,
+        Second,
+        Third,
+        Fourth,
+    }
+}
