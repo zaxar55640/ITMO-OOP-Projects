@@ -10,32 +10,19 @@ public class GroupIsFullException : Exception
 
 public class WrongGroupNameException : Exception
     {
-        public WrongGroupNameException()
-            : base("Wrong group name.")
+        public WrongGroupNameException(string name)
+            : base("Wrong group name:" + name)
         {
+            Name = name;
         }
-    }
 
-public class StudentHasGroupException : Exception
-    {
-        public StudentHasGroupException()
-            : base("Student already has a group.")
-        {
-        }
+        public string Name { get; }
     }
 
 public class GroupAlreadyExistsException : Exception
 {
     public GroupAlreadyExistsException()
         : base("The group is already exists.")
-    {
-    }
-}
-
-public class WrongData : Exception
-{
-    public WrongData()
-        : base("Wrong data were given.")
     {
     }
 }

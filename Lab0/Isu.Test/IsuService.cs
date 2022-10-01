@@ -12,7 +12,7 @@ public class IsuService
     public void AddStudentToGroup_StudentHasGroupAndGroupContainsStudent()
     {
         Services.IsuService isu = new Services.IsuService();
-        Group group1 = isu.AddGroup("M32101");
+        Group group1 = isu.AddGroup("M32222");
         Student student = isu.AddStudent(group1, "Задорнов Михаил Евгеньевич");
         Assert.Contains(student, group1.Students);
     }
@@ -28,22 +28,22 @@ public class IsuService
             isu.AddStudent(group, name);
         }
 
-        var exception = Assert.Throws<GroupIsFullException>(() => isu.AddStudent(group, "Maxim"));
+        Assert.Throws<GroupIsFullException>(() => isu.AddStudent(group, "Maxim"));
     }
 
     [Fact]
     public void CreateGroupWithInvalidName_ThrowException()
     {
         Services.IsuService isu = new Services.IsuService();
-        var exception = Assert.Throws<WrongGroupNameException>(() => isu.AddGroup("1912"));
+        Assert.Throws<WrongGroupNameException>(() => isu.AddGroup("1912"));
     }
 
     [Fact]
     public void TransferStudentToAnotherGroup_GroupChanged()
     {
         Services.IsuService isu = new Services.IsuService();
-        Group group1 = isu.AddGroup("M32101");
-        Group group2 = isu.AddGroup("M32102");
+        Group group1 = isu.AddGroup("M32155");
+        Group group2 = isu.AddGroup("M32123");
         Student student = isu.AddStudent(group1, "Maxim");
         isu.ChangeStudentGroup(student, group2);
         Assert.Contains(student, group2.Students);

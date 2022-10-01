@@ -14,30 +14,31 @@ public class IsuService : IIsuService
 
    public Group AddGroup(string name)
    {
-      Group group = new Group(name);
-      if (!Groups.Contains(group))
+      GroupName groupname = new GroupName(name);
+      var check = Groups.Where(p => p.Name == groupname);
+      if (!check.Any())
       {
+         Group group = new Group(name);
          Groups.Add(group);
+         return group;
       }
       else
       {
          throw new GroupAlreadyExistsException();
       }
-
-      return group;
    }
 
    public Student AddStudent(Group group, string name)
    {
       if (string.IsNullOrEmpty(name) || group == null)
       {
-         throw new WrongData();
+         throw new Dataexception();
       }
 
       Random rnd = new Random();
       int id = rnd.Next(1000000, 9999999);
       Student student = new Student(name, group, id);
-      if (!group.Students.Contains(student))
+      if (!group.Students.Where(p => p.Id == id).Any())
       {
          group.AddStudent(student);
       }
@@ -52,7 +53,7 @@ public class IsuService : IIsuService
    public List<Student> FindStudents(GroupName groupName)
    {
       List<Student> emptylist = new List<Student>();
-      var group = Groups.Where(p => p.Name == groupName).FirstOrDefault();
+      var group = Groups.FirstOrDefault(p => p.Name == groupName);
       if (group != null) return group.Students;
       return emptylist;
    }
@@ -60,13 +61,8 @@ public class IsuService : IIsuService
    public List<Student> FindStudents(CourseNumber courseNumber)
    {
       List<Student> emptylist = new List<Student>();
-      var group = Groups.Where(p => p.Name.CourseNumber == courseNumber);
-      foreach (var grup in group)
-      {
-         return grup.Students;
-      }
-
-      return emptylist;
+      var group = Groups.Where(p => p.Name.CourseNumber == courseNumber).Select(p => p.Students).SelectMany(p => p).ToList();
+      return group;
    }
 
    public Group FindGroup(GroupName groupName)
@@ -74,7 +70,7 @@ public class IsuService : IIsuService
       var group = Groups.Where(p => p.Name == groupName).FirstOrDefault();
       if (group == null)
       {
-           throw new WrongGroupNameException();
+           throw new WrongGroupNameException("null");
       }
 
       return group;
@@ -82,8 +78,8 @@ public class IsuService : IIsuService
 
    public List<Group> FindGroups(CourseNumber courseNumber)
    {
-      var groups = Groups.Where(p => p.Name.CourseNumber == courseNumber);
-      return (List<Group>)groups;
+      var groups = Groups.Where(p => p.Name.CourseNumber == courseNumber).ToList();
+      return groups;
    }
 
    public void ChangeStudentGroup(Student student, Group newGroup)

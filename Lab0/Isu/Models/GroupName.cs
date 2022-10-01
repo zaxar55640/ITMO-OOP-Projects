@@ -10,7 +10,7 @@ public class GroupName
     public GroupName(string name)
     {
         if (name.Length != 6 && Convert.ToInt32(name[1]) > 4)
-            throw new WrongGroupNameException();
+            throw new WrongGroupNameException(name);
         _name = name;
         CourseNumber = GetCourse(name);
         _groupNumber = GetNumber(name);
