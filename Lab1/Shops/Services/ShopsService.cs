@@ -29,57 +29,53 @@ public class ShopsService
         }
     }
 
-    public Product? FindProduct(Product product)
-    {
-        return ShopList.First(p => p.Products.Contains(product)).FindProduct(product);
-    }
-
     public Shop FindShop(Shop shop)
     {
-        if (ShopList.First(p => p == shop) == null)
+        var sh = ShopList.First(p => p == shop);
+        if (sh == null)
             throw new ShopNotFound();
-        return ShopList.First(p => p == shop);
+        return sh;
     }
 
-    public List<Product> Shipment(Shop shop, List<Product> products)
+    public List<ProductLot> Shipment(Shop shop, List<ProductLot> products)
     {
         shop.AddProducts(products);
-        return (List<Product>)shop.Products;
+        return (List<ProductLot>)shop.Products;
     }
 
     public BuyWithAmount ShopSells(Shop shop, Customer customer, BuyWithAmount product)
     {
-        if (shop.Products.Where(p => p.Name == product.Product.Name && p.Amount >= product.Amount).Any())
+        ProductLot productlot = shop.Products.First(p => p.PProduct == product.Product);
+        var check = shop.Products.Where(p => p.PProduct.Name == product.Product.Name && p.Amount >= product.Amount)
+            .Any();
+        if (check)
         {
-            customer.Buy(product);
+            decimal price = product.Amount * productlot.Price;
+            customer.Buy(price);
             shop.Sell(product);
         }
         else
         {
-            throw new AvailabilityException();
+            throw new ShopAvailabilityException();
         }
 
         return product;
     }
 
-    public Product SetNewPrice(Shop shop, Product product, float newprice)
+    public decimal SetNewPrice(Shop shop, Product product, decimal newprice)
     {
-        shop.Products.Remove(product);
-        Product newpricedproduct = new Product(product, newprice);
-        shop.AddProducts(newpricedproduct);
-        return newpricedproduct;
+        return shop.Products.First(p => p.PProduct == product).ChangePrice(newprice);
     }
 
-    public float CheckPrice(Shop shop, Product product)
+    public decimal CheckPrice(Shop shop, Product product)
     {
-        return shop.FindProduct(product).Price;
+        return shop.FindProduct(product.Name).Price;
     }
 
-    public Shop FindCheapestShop(BuyWithAmount buy, Customer customer)
+    public Shop FindCheapestShop(List<BuyWithAmount> buy)
     {
         var list = ShopList
-            .Where(shop => shop.FindProduct(buy.Product.Name).Name != "none" && shop.FindProduct(buy.Product.Name).Amount >= buy.Amount)
-            .OrderBy(shop => shop.FindProduct(buy.Product.Name).Price);
+            .OrderBy(p => p.CheckPrice(buy));
         return list.First();
     }
 }
