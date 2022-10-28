@@ -5,7 +5,7 @@ public class ProductLot
 {
     public ProductLot(Product product, int amount, decimal newPrice)
     {
-        if (product == null || amount <= 0)
+        if (amount < 0 || newPrice < 0)
         {
             throw new WrongData();
         }

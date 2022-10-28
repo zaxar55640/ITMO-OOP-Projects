@@ -6,7 +6,7 @@ public class BuyWithAmount
 {
     public BuyWithAmount(Product product, int amount)
     {
-        if (product == null || amount <= 0)
+        if (amount < 0)
         {
             throw new WrongData();
         }
