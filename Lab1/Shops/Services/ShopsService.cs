@@ -25,7 +25,7 @@ public class ShopsService
         }
         else
         {
-            throw new ShopAlreadyExistsException();
+            throw new ShopExistsException();
         }
     }
 
