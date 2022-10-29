@@ -5,26 +5,36 @@ namespace Shops.Entities;
 
 public class Customer
 {
-    public Customer(int balance, string name)
+    private decimal _balance;
+    public Customer(decimal balance, string name)
     {
-        Balance = balance;
+        if (balance < 0)
+        {
+            throw new WrongData();
+        }
+
+        _balance = balance;
         Name = name;
     }
 
-    public float Balance { get; set; }
     public string Name { get; }
 
-    public Customer Buy(BuyWithAmount product)
+    public Customer Buy(decimal price)
     {
-        float check = Balance - (product.Product.Price * product.Amount);
+        decimal check = _balance - price;
         if (check >= 0)
         {
-            Balance -= product.Product.Price * product.Amount;
+            _balance -= price;
             return this;
         }
         else
         {
             throw new NotEnoughMoneyException();
         }
+    }
+
+    public decimal Balance(Customer customer)
+    {
+        return _balance;
     }
 }
