@@ -1,8 +1,8 @@
 ﻿namespace Shops.Services;
 
-public class ShopAlreadyExistsException : Exception
+public class ShopExistsException : Exception
 {
-    public ShopAlreadyExistsException()
+    public ShopExistsException()
         : base("This shop is already exists.")
     {
     }
