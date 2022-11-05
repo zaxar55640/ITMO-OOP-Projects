@@ -39,5 +39,5 @@ public class GroupWithFaculty : Group
     }
 
     public string GetFaculty() => _faculty;
-    public List<Pair> GetPairs() => _pairs;
+    public IReadOnlyList<Pair> GetPairs() => _pairs;
 }

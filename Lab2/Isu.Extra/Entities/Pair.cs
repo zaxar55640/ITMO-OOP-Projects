@@ -1,4 +1,5 @@
-﻿namespace Isu.Extra.Entities;
+﻿using Isu.Extra.Exceptions;
+namespace Isu.Extra.Entities;
 
 public class Pair
 {
@@ -8,6 +9,10 @@ public class Pair
 
     public Pair(DateTime lessonBegin, DateTime lessonEnd, int roomNumber, string teacherName, string lessonName)
     {
+        if (roomNumber > 9999 && roomNumber < 1000)
+            throw new PairDataException();
+        if (teacherName == string.Empty || lessonName == string.Empty)
+            throw new PairDataException();
         BeginLessonTime = lessonBegin;
         EndLessonTime = lessonEnd;
         _lectureRoomNumber = roomNumber;

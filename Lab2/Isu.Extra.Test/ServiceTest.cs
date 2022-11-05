@@ -91,7 +91,7 @@ public class ServiceTest
         OGNP ognpcourse = isu.AddOgnp("рисование");
         Stream stream = new Stream(1);
         isu.AddStreamToOgnp(ognpcourse, stream);
-        var pairforgroup = new Pair(date1Begin, date1End, 228, "asd", "asdd");
+        var pairforgroup = new Pair(date1Begin, date1End, 3228, "asd", "asdd");
         var pairforognp = new Pair(date3Begin, date3End, 2312, "asdfw", "asd");
         stream.AddLesson(pairforognp);
         group.AddPair(pairforgroup);

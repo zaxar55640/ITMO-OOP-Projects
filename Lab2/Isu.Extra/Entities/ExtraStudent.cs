@@ -39,6 +39,6 @@ public class ExtraStudent : Student
     }
 
     public GroupWithFaculty GetGroup() => _group;
-    public List<OGNP> GetOGNPs() => _ognpList;
+    public IReadOnlyList<OGNP> GetOGNPs() => _ognpList;
     public string GetName() => Name;
 }
