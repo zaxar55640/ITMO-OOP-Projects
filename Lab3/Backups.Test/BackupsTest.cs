@@ -18,9 +18,9 @@ public class BackupsTest
         backupTask.CreateRestorePoint();
         backupTask.RemoveObject(obj1);
         backupTask.CreateRestorePoint();
-        List<RestorePoint> restorePoints = backupTask.GetRestorePoints();
-        List<Storage> firstStorages = restorePoints[0].GetStorages();
-        List<Storage> secondStorages = restorePoints[1].GetStorages();
+        IReadOnlyList<RestorePoint> restorePoints = backupTask.Backupp.RestorePoints;
+        IReadOnlyList<Storage> firstStorages = restorePoints[0].Storages;
+        IReadOnlyList<Storage> secondStorages = restorePoints[1].Storages;
         Assert.Equal(2, firstStorages.Count);
         Assert.Single(secondStorages);
         Assert.Equal(2, restorePoints.Count);

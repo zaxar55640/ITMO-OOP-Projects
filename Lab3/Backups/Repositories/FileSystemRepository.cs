@@ -8,22 +8,22 @@ public class FileSystemRepository : IRepository
 {
     public List<Storage> CreateRepository(BackupTask backupTask)
     {
-        if (!Directory.Exists($"./{backupTask.GetName()}"))
-            Directory.CreateDirectory($"./{backupTask.GetName()}");
+        if (!Directory.Exists($"./{backupTask.Name}"))
+            Directory.CreateDirectory($"./{backupTask.Name}");
         List<Storage> storages = new List<Storage>();
-        backupTask.GetObjects()
+        backupTask.GetObjects
             .ForEach(p =>
             {
-                Storage storage = backupTask.StorageModel.CreateStorage(p, backupTask.GetRestorePoints().Count, backupTask.GetName());
-                if (!File.Exists(storage.GetPath()))
+                Storage storage = backupTask.StorageModel.CreateStorage(p, backupTask.GetRestorePoints().Count, backupTask.Name);
+                if (!File.Exists(storage.Path))
                 {
-                    FileStream fs = File.Create(storage.GetPath());
+                    FileStream fs = File.Create(storage.Path);
                     fs.Close();
                 }
 
                 ZipArchive zip = ZipFile
-                    .Open(storage.GetPath(), File.Exists(storage.GetPath()) ? ZipArchiveMode.Update : ZipArchiveMode.Create);
-                zip.CreateEntryFromFile(p.GetPath(), p.GetName());
+                    .Open(storage.Path, File.Exists(storage.Path) ? ZipArchiveMode.Update : ZipArchiveMode.Create);
+                zip.CreateEntryFromFile(p.Path, p.Name);
                 zip.Dispose();
                 storages.Add(storage);
             });

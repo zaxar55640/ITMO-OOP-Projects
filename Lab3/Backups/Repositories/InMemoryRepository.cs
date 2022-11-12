@@ -7,8 +7,8 @@ public class InMemoryRepository : IRepository
 {
     public List<Storage> CreateRepository(BackupTask backupTask)
     {
-        return backupTask.GetObjects()
+        return backupTask.Objects
             .Select(p => backupTask
-                .StorageModel.CreateStorage(p, backupTask.GetRestorePoints().Count, backupTask.GetName())).ToList();
+                .StorageModel.CreateStorage(p, backupTask.GetRestorePoints().Count, backupTask.Name)).ToList();
     }
 }
