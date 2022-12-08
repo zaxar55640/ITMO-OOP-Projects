@@ -94,7 +94,6 @@ public class DebitAccount : IAccount
     {
         if (mode)
         {
-            _balance += 5;
             if (DateTime.Now < date.AddMonths(1))
             {
                 _percentPerMonthCount += _percent / 365 * _balance;
