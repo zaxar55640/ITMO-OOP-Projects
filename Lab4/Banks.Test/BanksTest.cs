@@ -42,29 +42,4 @@ public class BanksTest
         a2.Deposit(120000);
         Assert.Equal(125000, a2.GetBalance());
     }
-
-    [Fact]
-    public void CheckCommissionAndPercent_CommissionAndPercentGiven()
-    {
-        CentralBank cb = CentralBank.GetInstance(1000, false); // 1 seconds = 1 day
-        DateTime date = DateTime.Now;
-        DateTime finish = date.AddMilliseconds(32000);
-        Client cl1 = new Client("Zalhar", "Map", 123455);
-        Bank bank1 = cb.CreateBank("asd", 2, 10000, 1, 3, 4, 10000);
-        IAccount a1 = bank1.CreateDebitAccount(cl1);
-        IAccount a2 = bank1.CreateDepositAccount(cl1);
-        IAccount a3 = bank1.CreateCreditAccount(cl1);
-        a3.Transfer(10000, a2);
-        a2.Deposit(49000);
-        a1.Deposit(10000);
-        while (date != finish)
-        {
-            date = DateTime.Now;
-        }
-
-        Assert.Equal(3, bank1.GetAccounts().Count);
-        Assert.Equal(11644, Math.Round(a1.GetBalance()));
-        Assert.Equal(68699, Math.Round(a2.GetBalance()));
-        Assert.Equal(-11644, Math.Round(a3.GetBalance()));
-    }
 }
