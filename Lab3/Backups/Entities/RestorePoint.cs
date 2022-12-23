@@ -2,13 +2,12 @@
 
 public class RestorePoint
 {
-    private DateTime _creationTime;
-
     public RestorePoint(List<Storage> storages)
     {
         Storages = storages;
-        _creationTime = DateTime.Now;
+        CreationTime = DateTime.Now;
     }
 
+    public DateTime CreationTime { get; }
     public List<Storage> Storages { get; }
 }
