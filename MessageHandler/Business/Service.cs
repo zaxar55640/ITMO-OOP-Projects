@@ -32,7 +32,7 @@ public class Service
             }
             case AccountType.Employee:
             {
-                db.AddClient(new Client(name, password));
+                db.AddEmployee(new Employee(name, password));
                 break;
             }
 
@@ -136,6 +136,7 @@ public class Service
     public SummaryReport GetSummaryReport()
     {
         List<SourceReport> reports = db.GetSourceReports();
+        db.GetSourceReports().ForEach(p => this.SourceCloseSession(p.GetSource()));
         int amountMessage = reports.Sum(r => r.GetReceivedMessageAmount());
         int amountServedMessage = reports.Sum(r => r.GetDoneMessageAmount());
         return new SummaryReport(amountMessage, amountServedMessage);
@@ -198,5 +199,10 @@ public class Service
     {
         if (client == null) throw new DataException("Couldn't add client - not exists");
         db.AddClient(client);
+    }
+
+    public void AddDirector(Director dir)
+    {
+        db.AddDirector(dir);
     }
 }

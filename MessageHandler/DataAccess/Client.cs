@@ -18,7 +18,7 @@ public class Client : IAccount
     
     public bool login(string name, string psw)
     {
-        if (username != name && password != psw)
+        if (username == name && password == psw)
             return true;
         return false;
     }

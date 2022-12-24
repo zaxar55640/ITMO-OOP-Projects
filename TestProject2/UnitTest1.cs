@@ -28,4 +28,21 @@ public class UnitTest1
         service.EmployeeCloseSession(employee);
         Assert.Equal(1, db.GetEmployeeReports().First().GetAmountServed());
     }
+    
+    [Fact]
+    public void SignupLogin_SustemWorks()
+    {
+        DataBase db = new DataBase();
+        Service service = new Service(db, "123");
+        string name = "andrey";
+        string psw = "1234";
+        Client client = new Client("andrey", "1234");
+        Employee employee = new Employee("asdsa", "sad");
+        Source source = new Source("whatsapp");
+        service.AddClient(client);
+        service.AddEmployee(employee);
+        service.AddSource(source);
+        Client client2 = service.loginClient(name, psw);
+        Assert.True(client.login(name, psw));
+    }
 }

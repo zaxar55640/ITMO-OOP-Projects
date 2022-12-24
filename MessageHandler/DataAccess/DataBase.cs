@@ -31,7 +31,7 @@ public class DataBase
         if (_directors.Any(c => c.login(name, psw)))
             return "director";
         if (Employees.Any(c => c.login(name, psw)))
-            return "client";
+            return "employee";
         return "Wrong password or username.";
     }
     
